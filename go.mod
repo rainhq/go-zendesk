@@ -1,4 +1,4 @@
-module github.com/MEDIGO/go-zendesk
+module github.com/rainhq/go-zendesk
 
 go 1.14
 
