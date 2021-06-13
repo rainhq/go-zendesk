@@ -90,16 +90,16 @@ func TestUserCRUD(t *testing.T) {
 	require.NoError(t, err)
 	require.False(t, *created.Active)
 
-	statues, err := client.ShowComplianceDeletionStatuses(*created.ID)
+	statuses, err := client.ShowComplianceDeletionStatuses(*created.ID)
 	require.NoError(t, err)
-	require.Zero(t, len(statues))
+	require.Zero(t, len(statuses))
 
 	_, err = client.PermanentlyDeleteUser(*created.ID)
 	require.NoError(t, err)
 
-	statues, err = client.ShowComplianceDeletionStatuses(*created.ID)
+	statuses, err = client.ShowComplianceDeletionStatuses(*created.ID)
 	require.NoError(t, err)
-	require.NotZero(t, len(statues))
+	require.NotZero(t, len(statuses))
 
 	other, err = client.DeleteUser(*other.ID)
 	require.NoError(t, err)
@@ -153,4 +153,30 @@ func TestListUsers(t *testing.T) {
 	found, err := client.ListUsers(nil)
 	require.NoError(t, err)
 	require.NotEqual(t, 0, len(found))
+}
+
+func TestCreateOrUpdateManyUsers(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping integration test in short mode.")
+	}
+
+	client, err := NewEnvClient()
+	require.NoError(t, err)
+
+	job, err := client.CreateOrUpdateManyUsers([]User{
+		{
+			Name:  String(randString(16)),
+			Email: String(randString(16) + "@example.com"),
+		},
+		{
+			Name:  String(randString(16)),
+			Email: String(randString(16) + "@example.com"),
+		},
+		{
+			Name:  String(randString(16)),
+			Email: String(randString(16) + "@example.com"),
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, job.ID)
 }

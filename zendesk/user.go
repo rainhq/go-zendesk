@@ -109,6 +109,16 @@ func (c *client) CreateOrUpdateUser(user *User) (*User, error) {
 	return out.User, err
 }
 
+// CreateOrUpdateManyUsers creates or updates users in a batch.
+//
+// Zendesk Core API docs: https://developer.zendesk.com/rest_api/docs/core/users#create-or-update-many-users
+func (c *client) CreateOrUpdateManyUsers(users []User) (*JobStatus, error) {
+	in := &APIPayload{Users: users}
+	out := new(APIPayload)
+	err := c.post("/api/v2/users/create_or_update_many.json", in, out)
+	return out.JobStatus, err
+}
+
 // UpdateUser updates a user.
 //
 // Zendesk Core API docs: https://developer.zendesk.com/rest_api/docs/core/users#update-user
