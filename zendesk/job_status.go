@@ -9,9 +9,7 @@ type JobStatus struct {
 	ID       *string `json:"id,omitempty"`
 	Message  *string `json:"message,omitempty"`
 	Progress *int64  `json:"progress,omitempty"`
-	// TODO: Raise this issue with ZenDesk support
-	// API docs are inconsistent with actual behaviour
-	Results *Result `json:"results,omitempty"`
+	Results []*Result `json:"results,omitempty"`
 	Status  *string `json:"status,omitempty"`
 	Total   *int64  `json:"total,omitempty"`
 	URL     *string `json:"url,omitempty"`
